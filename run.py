@@ -6,9 +6,9 @@ HH.ru Auto Applier Bot
 Автоматический отклик на вакансии hh.ru
 
 Использование:
-    python main.py                  # Запуск с config.yaml
-    python main.py -c myconfig.yaml # Запуск с другим конфигом
-    python main.py --debug          # Запуск в режиме отладки
+    python run.py                  # Запуск с config.yaml
+    python run.py -c myconfig.yaml # Запуск с другим конфигом
+    python run.py --debug          # Запуск в режиме отладки
 """
 
 import argparse
@@ -30,9 +30,9 @@ def parse_args():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Примеры:
-  python main.py                    Запуск с настройками по умолчанию
-  python main.py -c custom.yaml     Использовать другой файл конфигурации
-  python main.py --debug            Включить режим отладки
+  python run.py                    Запуск с настройками по умолчанию
+  python run.py -c custom.yaml     Использовать другой файл конфигурации
+  python run.py --debug            Включить режим отладки
 
 Документация: https://github.com/your-repo/hh-auto-applier
         """

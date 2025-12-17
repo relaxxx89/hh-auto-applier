@@ -101,16 +101,34 @@ debug: false
 
 ## 🎮 Использование
 
+### Базовый запуск
+
 ```bash
-python main.py
+python run.py
+```
+
+### Дополнительные опции
+
+```bash
+# Использовать другой файл конфигурации
+python run.py -c myconfig.yaml
+
+# Включить режим отладки
+python run.py --debug
+
+# Показать версию
+python run.py --version
+
+# Показать справку
+python run.py --help
 ```
 
 ### Первый запуск
 
 1. Откроется браузер Chrome
 2. Залогинься на hh.ru вручную
-3. Нажми Enter в консоли
-4. Бот начнёт работу
+3. Дождись сообщения "Авторизация успешна!"
+4. Бот автоматически начнёт работу
 
 ### Последующие запуски
 
@@ -129,22 +147,25 @@ python main.py
 
 ```
 hh-auto-applier/
-├── main.py              # Точка входа
-├── config.yaml          # Конфигурация (создаётся пользователем)
-├── config.example.yaml  # Пример конфигурации
-├── requirements.txt     # Зависимости
-├── README.md           # Документация
-├── LICENSE             # Лицензия MIT
-├── .gitignore          # Git ignore
-└── src/
-    ├── __init__.py
-    ├── bot.py          # Главный класс бота
-    ├── config.py       # Загрузка конфигурации
-    ├── storage.py      # Работа с JSON хранилищем
-    ├── selenium_helper.py  # Утилиты Selenium
-    ├── vacancy.py      # Работа с карточками вакансий
-    ├── modal.py        # Модальное окно отклика
-    └── logger.py       # Логирование
+├── run.py               # 🚀 Точка входа (запуск бота)
+├── config.yaml          # ⚙️ Конфигурация (создаётся пользователем)
+├── config.example.yaml  # 📄 Пример конфигурации
+├── requirements.txt     # 📦 Зависимости Python
+├── README.md            # 📖 Документация
+├── LICENSE              # 📜 Лицензия MIT
+├── .gitignore           # 🚫 Git ignore
+├── processed_vacancies.json  # 💾 Обработанные вакансии (создаётся автоматически)
+├── skipped_vacancies.json    # 📋 Пропущенные вакансии (создаётся автоматически)
+├── chrome_profile/      # 🌐 Профиль Chrome (создаётся автоматически)
+└── src/                 # 📂 Исходный код
+    ├── __init__.py      # 📦 Инициализация пакета
+    ├── bot.py           # 🤖 Главный класс бота
+    ├── config.py        # ⚙️ Загрузка конфигурации
+    ├── storage.py       # 💾 Работа с JSON хранилищем
+    ├── selenium_helper.py  # 🔧 Утилиты Selenium
+    ├── vacancy.py       # 📄 Работа с карточками вакансий
+    ├── modal.py         # 🪟 Модальное окно отклика
+    └── logger.py        # 📝 Логирование с цветами
 ```
 
 ## ⚠️ Важно
