@@ -94,7 +94,7 @@ def main():
         # Переопределяем debug если указан флаг
         if args.debug:
             bot.config.debug = True
-            bot.logger = Logger(debug=True)
+            bot.logger = Logger(debug_mode=True)
         
         bot.run()
     

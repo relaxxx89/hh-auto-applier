@@ -58,3 +58,6 @@ Thumbs.db
 .pytest_cache/
 .coverage
 htmlcov/
+
+# old main
+main_refactored.py

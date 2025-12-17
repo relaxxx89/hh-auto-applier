@@ -7,6 +7,7 @@ import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Any, Optional
+from urllib.parse import quote_plus
 
 try:
     import yaml
@@ -34,16 +35,11 @@ class ResumeRule:
 class Config:
     """Главная конфигурация бота"""
     
-    # Поисковые запросы
-    search_queries: List[str] = field(default_factory=lambda: [
-        "linux системный администратор",
-        "devops инженер",
-    ])
+    # Поисковые запросы (список словарей с url, keywords, name)
+    search_queries: List[Dict[str, Any]] = field(default_factory=list)
     
-    # Ключевые слова для фильтрации
-    allowed_keywords: List[str] = field(default_factory=lambda: [
-        "linux", "devops", "sre", "системный администратор",
-    ])
+    # Ключевые слова для фильтрации (deprecated, используйте keywords в search_queries)
+    allowed_keywords: List[str] = field(default_factory=list)
     
     # Правила выбора резюме
     resume_rules: List[ResumeRule] = field(default_factory=list)
@@ -69,6 +65,25 @@ class Config:
     
     # Базовый URL
     hh_base: str = "https://hh.ru/search/vacancy"
+    
+    # Настройки Chrome
+    chrome_profile: str = "chrome_profile"
+    profile_name: str = "HH_Bot"
+    chromedriver_path: str = ""
+    headless: bool = False
+    
+    # Задержки
+    page_load_delay: float = 2.0
+    delay_between_pages: float = 3.0
+    delay_between_applies: float = 2.0
+    
+    @staticmethod
+    def load(config_path: Optional[str] = None) -> 'Config':
+        """
+        Загружает конфигурацию из YAML файла.
+        Если файл не найден, возвращает конфигурацию по умолчанию.
+        """
+        return load_config(config_path)
 
 
 def load_config(config_path: Optional[str] = None) -> Config:
@@ -125,17 +140,45 @@ def _load_from_yaml(path: str) -> Config:
             keywords=rule_data.get('keywords', []),
         ))
     
+    # Парсим поисковые запросы
+    search_queries = []
+    raw_queries = data.get('search_queries', [])
+    allowed_keywords = data.get('allowed_keywords', [])
+    area = data.get('area', 113)
+    schedule = data.get('schedule', 'remote')
+    
+    for query in raw_queries:
+        if isinstance(query, dict):
+            # Новый формат: {'url': '...', 'keywords': [...], 'name': '...'}
+            search_queries.append(query)
+        elif isinstance(query, str):
+            # Старый формат: просто строка запроса
+            # Конвертируем в URL
+            url = f"https://hh.ru/search/vacancy?text={quote_plus(query)}&area={area}&schedule={schedule}"
+            search_queries.append({
+                'url': url,
+                'keywords': allowed_keywords,
+                'name': query,
+            })
+    
     return Config(
-        search_queries=data.get('search_queries', Config.search_queries),
-        allowed_keywords=data.get('allowed_keywords', Config.allowed_keywords),
+        search_queries=search_queries,
+        allowed_keywords=allowed_keywords,
         resume_rules=resume_rules,
         cover_letter=data.get('cover_letter', ''),
-        area=data.get('area', 113),
-        schedule=data.get('schedule', 'remote'),
+        area=area,
+        schedule=schedule,
         max_pages=data.get('max_pages', 5),
         debug=data.get('debug', False),
         save_interval=data.get('save_interval', 10),
         timeouts=timeouts,
+        chrome_profile=data.get('chrome_profile', 'chrome_profile'),
+        profile_name=data.get('profile_name', 'HH_Bot'),
+        chromedriver_path=data.get('chromedriver_path', ''),
+        headless=data.get('headless', False),
+        page_load_delay=data.get('page_load_delay', 2.0),
+        delay_between_pages=data.get('delay_between_pages', 3.0),
+        delay_between_applies=data.get('delay_between_applies', 2.0),
     )
 
 
