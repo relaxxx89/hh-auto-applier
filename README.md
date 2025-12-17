@@ -1,4 +1,5 @@
 # 🤖 HH.ru Auto Applier
+<img width="1790" height="900" alt="image" src="https://github.com/user-attachments/assets/2d46f6df-4f02-48fa-a49b-040e5e357da6" />
 
 Автоматический бот для отправки откликов на вакансии на [hh.ru](https://hh.ru).
 
